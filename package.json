@@ -1,37 +1,61 @@
 {
-  "name": "react-native-body-highlighter",
-  "version": "3.1.3",
-  "main": "index.tsx",
-  "author": "HichamELBSI",
+  "name": "svelte-body-highlighter",
+  "version": "4.0.0",
+  "type": "module",
+  "author": "Stefan Poindl",
+  "contributors": [
+      {
+        "name": "ELABBASSI Hicham",
+        "url": "https://github.com/HichamELBSI/react-native-body-highlighter"
+      }
+    ],
   "license": "MIT",
   "keywords": [
-    "reactnative",
-    "react",
+    "svelte",
     "muscle",
     "muscles",
     "body",
     "highlighter",
     "highlight",
     "color",
-    "svg"
+    "svg",
+    "anatomy",
+    "fitness",
+    "workout"
   ],
   "scripts": {
-    "test": "jest",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "react-native-svg": "^15.9.0"
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "package": "svelte-kit sync && svelte-package",
+    "prepublishOnly": "npm run package",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "vitest"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "svelte": "^4.0.0 || ^5.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
-    "@types/react-native": "^0.73.0",
-    "jest": "^29.7.0",
-    "react-native-typescript-transformer": "^1.2.13",
-    "typescript": "^5.6.3"
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/package": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.0.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.0.0",
+    "vitest": "^2.0.0"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js"
+    },
+    "./body-highlighter.css": "./dist/body-highlighter.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "svelte": "./dist/index.js"
 }

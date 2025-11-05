@@ -1,0 +1,136 @@
+/**
+ * Body Highlighter CSS Custom Properties
+ *
+ * This file documents all available CSS custom properties (variables) that can be
+ * overridden to customize the appearance of the body highlighter component.
+ *
+ * Usage:
+ * Import this file in your app and override any variables:
+ *
+ * ```css
+ * @import 'svelte-body-highlighter/body-highlighter.css';
+ *
+ * :root {
+ *   --body-part-intensity-1-color: #ff6b6b;
+ *   --body-part-intensity-2-color: #ee5a6f;
+ * }
+ * ```
+ */
+
+:root {
+  /* ========================================
+   * Outline Styling
+   * ======================================== */
+
+  /**
+   * Color of the body outline
+   * @default #dfdfdf
+   */
+  --body-outline-color: #dfdfdf;
+
+  /**
+   * Width of the body outline stroke
+   * @default 2
+   */
+  --body-outline-width: 2;
+
+
+  /* ========================================
+   * Body Part Default Styling
+   * ======================================== */
+
+  /**
+   * Default fill color for unselected body parts
+   * @default #3f3f3f
+   */
+  --body-part-default-color: #3f3f3f;
+
+  /**
+   * Cursor style for body parts
+   * @default pointer
+   */
+  --body-part-cursor: pointer;
+
+  /**
+   * Transition effect for body parts
+   * @default fill 0.3s ease
+   */
+  --body-part-transition: fill 0.3s ease;
+
+  /**
+   * Opacity on hover
+   * @default 0.8
+   */
+  --body-part-hover-opacity: 0.8;
+
+
+  /* ========================================
+   * Body Part Selected Styling
+   * ======================================== */
+
+  /**
+   * Fill color for selected body parts (when no intensity specified)
+   * Falls back to intensity-1 color if not set
+   * @default (uses --body-part-intensity-1-color)
+   */
+  --body-part-selected-color: #0984e3;
+
+  /**
+   * Fill color for selected body parts with intensity level 1
+   * @default #74b9ff (light blue)
+   */
+  --body-part-intensity-1-color: #74b9ff;
+
+  /**
+   * Fill color for selected body parts with intensity level 2
+   * @default #0984e3 (medium blue)
+   */
+  --body-part-intensity-2-color: #0984e3;
+
+
+  /* ========================================
+   * Specific Body Part Overrides
+   * ======================================== */
+
+  /**
+   * Default color for the head (when not selected)
+   * Falls back to default body part color if not set
+   * @default #bebebe (light gray)
+   */
+  --body-part-head-color: #bebebe;
+}
+
+
+/* ========================================
+ * Example: Custom Color Schemes
+ * ======================================== */
+
+/* Uncomment to use a red/orange color scheme
+.body-svg-container {
+  --body-part-intensity-1-color: #ffb3ba;
+  --body-part-intensity-2-color: #ff6b6b;
+}
+*/
+
+/* Uncomment to use a green color scheme
+.body-svg-container {
+  --body-part-intensity-1-color: #95e1d3;
+  --body-part-intensity-2-color: #38ada9;
+}
+*/
+
+/* Uncomment to use a purple color scheme
+.body-svg-container {
+  --body-part-intensity-1-color: #a29bfe;
+  --body-part-intensity-2-color: #6c5ce7;
+}
+*/
+
+/* Uncomment to use a dark theme
+.body-svg-container {
+  --body-part-default-color: #2d3436;
+  --body-outline-color: #636e72;
+  --body-part-intensity-1-color: #74b9ff;
+  --body-part-intensity-2-color: #0984e3;
+}
+*/

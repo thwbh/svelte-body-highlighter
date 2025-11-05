@@ -1,145 +1,156 @@
-# react-native-body-highlighter
+# svelte-body-highlighter
 
-[![npm](https://img.shields.io/npm/v/react-native-body-highlighter.svg)](https://www.npmjs.com/package/react-native-body-highlighter) [![Downloads](https://img.shields.io/npm/dt/react-native-body-highlighter.svg)](https://www.npmjs.com/package/react-native-body-highlighter)
+This project is a Svelte/SvelteKit port of [react-native-body-highlighter](https://github.com/HichamELBSI/react-native-body-highlighter) originally created by [ELABBASSI Hicham].
 
-> SVG human body parts highlighter for react-native (Expo compatible).
-
-<div style="text-align:center;width:100%;">
-  <img src="./docs/screenshots/example-female-front.PNG" width="150" alt="body-highlighter" />
-  <img src="./docs/screenshots/example-female-back.PNG" width="150" alt="body-highlighter" />
-  <img src="./docs/screenshots/example-male-front.PNG" width="150" alt="body-highlighter" />
-  <img src="./docs/screenshots/example-male-back.PNG" width="150" alt="body-highlighter" />
-</div>
+> SVG human body parts highlighter for Svelte (SvelteKit compatible).
 
 ## Installation
 
 npm
 
 ```bash
-$ npm install react-native-body-highlighter
+$ npm install svelte-body-highlighter
 ```
 
 yarn
 
 ```bash
-$ yarn add react-native-body-highlighter
+$ yarn add svelte-body-highlighter
+```
+
+pnpm
+
+```bash
+$ pnpm add svelte-body-highlighter
 ```
 
 ## Usage
 
 ### Basic example
 
-```jsx
-import { useState } from "react";
-import Body from "react-native-body-highlighter";
+```svelte
+<script lang="ts">
+  import Body from "svelte-body-highlighter";
+</script>
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Body
-        data={[
-          { slug: "chest", intensity: 1, side: "left" },
-          { slug: "biceps", intensity: 2 },
-        ]}
-        gender="female"
-        side="front"
-        scale={1.7}
-        border="#dfdfdf"
-      />
-    </View>
-  );
-}
+<div class="container">
+  <Body
+    data={[
+      { slug: "chest", intensity: 1, side: "left" },
+      { slug: "biceps", intensity: 2 },
+    ]}
+    gender="female"
+    side="front"
+    scale={1.7}
+    border="#dfdfdf"
+  />
+</div>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+<style>
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+</style>
 ```
 
 <details>
 <summary style="font-size:18px; font-weight: bold;">Complete example</summary>
 <p>
 
-```jsx
-import { StyleSheet, Switch, Text, View } from "react-native";
-import { useState } from "react";
-import Body, { ExtendedBodyPart } from "react-native-body-highlighter";
+```svelte
+<script lang="ts">
+  import Body from "svelte-body-highlighter";
+  import type { ExtendedBodyPart } from "svelte-body-highlighter/types";
 
-export default function App() {
-  const [selectedBodyPart, setSelectedBodyPart] =
-    useState <
-    ExtendedBodyPart >
-    {
-      slug: "biceps",
-      intensity: 2,
-      side: "right",
-    };
-  const [side, setSide] = (useState < "back") | ("front" > "front");
-  const [gender, setGender] = (useState < "male") | ("female" > "male");
+  let selectedBodyParts: ExtendedBodyPart[] = [
+    { slug: "chest", intensity: 1, side: "left" },
+    { slug: "biceps", intensity: 1 },
+    { slug: "biceps", intensity: 2, side: "right" }
+  ];
 
-  const sideSwitch = () =>
-    setSide((previousState) => (previousState === "front" ? "back" : "front"));
+  let side: "front" | "back" = "front";
+  let gender: "male" | "female" = "male";
 
-  const toggleGenderSwitch = () => {
-    setGender((previousState) =>
-      previousState === "male" ? "female" : "male"
+  function handleBodyPartPress(bodyPart: ExtendedBodyPart, partSide?: "left" | "right") {
+    // Toggle selection or update intensity
+    const existingIndex = selectedBodyParts.findIndex(
+      bp => bp.slug === bodyPart.slug && bp.side === partSide
     );
-  };
 
-  return (
-    <View style={styles.container}>
-      <Body
-        data={[
-          { slug: "chest", intensity: 1, side: "left" },
-          { slug: "biceps", intensity: 1 },
-          selectedBodyPart,
-        ]}
-        onBodyPartPress={(e, side) =>
-          setSelectedBodyPart({ slug: e.slug, intensity: 2, side })
-        }
-        gender={gender}
-        side={side}
-        scale={1.7}
-        border="#dfdfdf"
-      />
-      <View style={styles.switchContainer}>
-        <View style={styles.switch}>
-          <Text>Side ({side})</Text>
-          <Switch onValueChange={sideSwitch} value={side === "front"} />
-        </View>
-        <View style={styles.switch}>
-          <Text>Gender ({gender})</Text>
-          <Switch
-            onValueChange={toggleGenderSwitch}
-            value={gender === "male"}
-          />
-        </View>
-      </View>
-    </View>
-  );
-}
+    if (existingIndex >= 0) {
+      // Remove if already selected
+      selectedBodyParts = selectedBodyParts.filter((_, i) => i !== existingIndex);
+    } else {
+      // Add with intensity 2
+      selectedBodyParts = [...selectedBodyParts, {
+        slug: bodyPart.slug,
+        intensity: 2,
+        side: partSide
+      }];
+    }
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  switchContainer: {
-    flexDirection: "row",
-    gap: 30,
-  },
-  switch: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+  function toggleSide() {
+    side = side === "front" ? "back" : "front";
+  }
+
+  function toggleGender() {
+    gender = gender === "male" ? "female" : "male";
+  }
+</script>
+
+<div class="container">
+  <Body
+    data={selectedBodyParts}
+    {gender}
+    {side}
+    scale={1.7}
+    border="#dfdfdf"
+    onBodyPartPress={handleBodyPartPress}
+  />
+
+  <div class="controls">
+    <div class="control">
+      <span>Side ({side})</span>
+      <label>
+        <input type="checkbox" checked={side === "front"} on:change={toggleSide} />
+      </label>
+    </div>
+    <div class="control">
+      <span>Gender ({gender})</span>
+      <label>
+        <input type="checkbox" checked={gender === "male"} on:change={toggleGender} />
+      </label>
+    </div>
+  </div>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #fff;
+  }
+
+  .controls {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+</style>
 ```
 
 </p>
