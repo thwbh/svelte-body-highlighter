@@ -126,7 +126,7 @@
 
   <div class="footer">
     <p>
-      <a href="https://github.com/yourname/svelte-body-highlighter" target="_blank">View on GitHub</a>
+      <a href="https://github.com/thwbh/svelte-body-highlighter" target="_blank">View on GitHub</a>
       |
       <a href="https://www.npmjs.com/package/svelte-body-highlighter" target="_blank">NPM Package</a>
     </p>

@@ -55,7 +55,10 @@
     "./body-highlighter.css": "./dist/body-highlighter.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
   ],
-  "svelte": "./dist/index.js"
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }
