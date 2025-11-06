@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Body } from '$lib';
   import type { ExtendedBodyPart } from '$lib/types';
+  import { onMount } from 'svelte';
 
   let selectedBodyParts: ExtendedBodyPart[] = [
     { slug: 'chest', intensity: 1, side: 'left' },
@@ -9,6 +10,17 @@
 
   let side: 'front' | 'back' = 'front';
   let gender: 'male' | 'female' = 'male';
+  let theme: 'light' | 'dark' = 'light';
+
+  // Load theme from localStorage on mount
+  onMount(() => {
+    const savedTheme = localStorage.getItem('body-highlighter-theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      theme = savedTheme;
+    }
+    // Always apply theme to ensure CSS variables are set
+    applyTheme(theme);
+  });
 
   function handleBodyPartPress(bodyPart: ExtendedBodyPart, partSide?: 'left' | 'right') {
     console.log('Body part clicked:', bodyPart.slug, partSide);
@@ -40,6 +52,34 @@
 
   function clearSelection() {
     selectedBodyParts = [];
+  }
+
+  function toggleTheme() {
+    theme = theme === 'light' ? 'dark' : 'light';
+    applyTheme(theme);
+    localStorage.setItem('body-highlighter-theme', theme);
+  }
+
+  function applyTheme(selectedTheme: 'light' | 'dark') {
+    const root = document.documentElement;
+
+    if (selectedTheme === 'dark') {
+      // Dark theme colors - lighter body parts on dark background
+      root.style.setProperty('--body-part-default-color', '#95a5a6'); // Lighter gray for body parts
+      root.style.setProperty('--body-outline-color', '#bdc3c7'); // Light outline
+      root.style.setProperty('--body-part-intensity-1-color', '#a29bfe'); // Light purple
+      root.style.setProperty('--body-part-intensity-2-color', '#6c5ce7'); // Dark purple
+      root.style.setProperty('--body-part-head-color', '#5d6d7e'); // Darker gray for head in dark theme
+      root.style.setProperty('--body-display-bg', '#2c3e50'); // Dark blue-gray background
+    } else {
+      // Light theme colors (defaults)
+      root.style.setProperty('--body-part-default-color', '#3f3f3f');
+      root.style.setProperty('--body-outline-color', '#dfdfdf');
+      root.style.setProperty('--body-part-intensity-1-color', '#74b9ff'); // Light blue
+      root.style.setProperty('--body-part-intensity-2-color', '#0984e3'); // Dark blue
+      root.style.setProperty('--body-part-head-color', '#bebebe'); // Light gray for head in light theme
+      root.style.setProperty('--body-display-bg', '#f8f9fa'); // Light background
+    }
   }
 </script>
 
@@ -74,6 +114,10 @@
         <label class="toggle">
           <input type="checkbox" checked={gender === 'male'} on:change={toggleGender} />
           <span>Gender: <strong>{gender}</strong></span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" checked={theme === 'light'} on:change={toggleTheme} />
+          <span>Theme: <strong>{theme}</strong></span>
         </label>
       </div>
 
@@ -113,11 +157,15 @@
 
       <div class="control-group">
         <h3>CSS Customization</h3>
-        <p class="info-text">All colors and styles can be customized via CSS variables. See <code>CSS_CUSTOMIZATION.md</code> for details.</p>
+        <p class="info-text">Toggle the theme above to see how CSS variables can customize the body highlighter. All colors are controlled via CSS custom properties.</p>
         <div class="css-example">
-          <pre><code>:root {'{'}
-  --body-part-intensity-1-color: #ff6b6b;
-  --body-part-intensity-2-color: #ee5a6f;
+          <pre><code>/* {theme === 'dark' ? 'Dark' : 'Light'} Theme */
+:root {'{'}
+  --body-part-default-color: {theme === 'dark' ? '#95a5a6' : '#3f3f3f'};
+  --body-outline-color: {theme === 'dark' ? '#bdc3c7' : '#dfdfdf'};
+  --body-part-intensity-1-color: {theme === 'dark' ? '#a29bfe' : '#74b9ff'};
+  --body-part-intensity-2-color: {theme === 'dark' ? '#6c5ce7' : '#0984e3'};
+  --body-display-bg: {theme === 'dark' ? '#2c3e50' : '#f8f9fa'};
 {'}'}</code></pre>
         </div>
       </div>
@@ -179,8 +227,9 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    background: #f8f9fa;
+    background: var(--body-display-bg, #f8f9fa);
     border-radius: 12px;
+    transition: background 0.3s ease;
   }
 
   .controls {

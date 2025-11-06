@@ -177,4 +177,17 @@
   .body-svg-container :global(#head .body-part) {
     fill: var(--body-part-head-color, var(--body-part-default-color, #bebebe));
   }
+
+  /* When head is selected, use selection colors */
+  .body-svg-container :global(#head .body-part.selected) {
+    fill: var(--body-part-selected-color, var(--body-part-intensity-1-color, #0984e3));
+  }
+
+  .body-svg-container :global(#head .body-part.selected.intensity-1) {
+    fill: var(--body-part-intensity-1-color, #74b9ff);
+  }
+
+  .body-svg-container :global(#head .body-part.selected.intensity-2) {
+    fill: var(--body-part-intensity-2-color, #0984e3);
+  }
 </style>
