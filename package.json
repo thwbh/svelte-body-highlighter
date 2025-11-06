@@ -1,6 +1,6 @@
 {
   "name": "svelte-body-highlighter",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "type": "module",
   "author": "Stefan Poindl",
   "contributors": [
@@ -34,7 +34,7 @@
     "test": "vitest"
   },
   "peerDependencies": {
-    "svelte": "^4.0.0 || ^5.0.0"
+    "svelte": "^5.0.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
